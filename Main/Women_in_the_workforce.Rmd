@@ -1,13 +1,13 @@
 ---
-title: "Data Wrangling Project"
-author: "Saidat Abidemi Sanni and Ayshwarya Srinivasan"
-date: "12/3/2019"
-output: html_document
+title: "Women in the workforce"
+always_allow_html: true
+output:  
+  rmarkdown::github_document:
+    toc: true
 ---
 
-# Women in the Workplace  {.tabset .tabset-fade} 
 
-## Introduction {.tabset .tabset-fade} 
+## Introduction
 
 
 **Problem Statement**
