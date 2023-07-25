@@ -17,13 +17,13 @@ output:
 Gender bias in earnings is an ongoing issue. In 2019, the [American Association of University Women (AAUW)](https://www.aauw.org/research/the-simple-truth-about-the-gender-pay-gap/) stated that women who work full-time earn about 80 percent of what their male counterparts make. This report identified the following problems which we attempt to investigate in our study:
 
 * The gender wage gap continues to grow over time.
-* Women of all age groups face gender pay gap.
+* Women of all age groups face a gender pay gap.
 * Women face a wider pay gap as they get older.
 * Women are still faced with the gender pay gap in occupations with an equal representation of male and female workers.
 
 **Data and Methodology**
 
-For this study, we would use the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data which is  historical data about womens' earnings and employment status, specific occupation and earnings from 2013-2016, compiled from the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census Bureau](https://www.census.gov/).
+For this study, we would use the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data which is historical data about womens' earnings and employment status, specific occupation and earnings from 2013-2016, compiled from the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census Bureau](https://www.census.gov/).
 We intend to analyze the data using the following methodologies: *Trend analysis, descriptive analysis, data visualization techniques, and inferential analysis*.
 
 
@@ -198,7 +198,7 @@ glimpse(employed_gender)
 The next stage of the data cleaning process is to check for missing values and make decisions on removal or data imputation, where appropriate.
 As shown in the **Data Import and Description tab**, the only data set with some missing values is **Dataset 1 - jobs_gender**. So, we focus on this dataset. 
 
-1. There are **65 cases with missing values** for the total earnings for female workers. Of this 65 cases, there are **19 cases** where the total number of female workers in the field or occupation types is zero and the total earnings for female is missing "NA". We impute these missing values as zero because no female workers implies no total female earnings.
+1. There are **65 cases with missing values** for the total earnings of female workers. Of these 65 cases, there are **19 cases** where the total number of female workers in the field or occupation types is zero and the total earnings for females are missing "NA". We impute these missing values as zero because no female worker implies no total female earnings.
 
 ```{r echo = FALSE, message = FALSE }
 #Impute missing values as zero
@@ -432,7 +432,7 @@ almost_equal_rep %>%
 
 ### Time series analysis
 
-**Do women face wider pay gap as they get older?**
+**Do women face a wider pay gap as they get older?**
 
 The chart below provides insights into three of our objectives.
 
@@ -456,9 +456,9 @@ ggplot(data=(earnings_female[-c(1:33),]), aes(x=Year, y=percent, group = group, 
 
 ```
 
-**Full-time/ Part-time represenation based on gender**
+**Full-time/ Part-time representation based on gender**
 
-The proportion of full-/part-time workers is examined across both genders to gain some insights on how the increase/decrease in full-time workers may have contributed to the gender pay gap. From 2000-2016, we notice that the percentage of men working full time is greater than the percentage of women working full time. 
+The proportion of full-/part-time workers is examined across both genders to gain some insights into how the increase/decrease in full-time workers may have contributed to the gender pay gap. From 2000-2016, we notice that the percentage of men working full time is greater than the percentage of women working full time. 
 
 We see a dip in the percentage of both male and female full-time percentage between 2008 and 2009 and an increase in part-time percentage between 2008 and 2009, suggesting the likely effect of the 2008 financial crisis.
 
@@ -511,22 +511,22 @@ ggplot(part_time, aes(x=part_time_female, xend=part_time_male, y=year)) +
 
 ## Summary
 
-This study examined the gender bias in earnings in the US, with a focus on female workers. Using the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data, we explored the trend and how women of different age groups are affected.In addition, we highlighted industries in which occupations where female workers earn more than male workers. We ranked these industries based on the number of occupation types with female earnings greater than male earnings and indicated if the industries are male- or female-dominated. 
+This study examined the gender bias in earnings in the US, with a focus on female workers. Using the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data, we explored the trend and how women of different age groups are affected. In addition, we highlighted industries in which occupations where female workers earn more than male workers. We ranked these industries based on the number of occupation types with female earnings greater than male earnings and indicated if the industries are male- or female-dominated. 
 
-Our results show that the gender pay gap has decreased over the years, but women workers still earn lesser than their male counterparts across all the age categories. Younger female workers between the ages of 16 and 24 face lesser gender-based pay differences compared to older female workers. Over the years, female workers have had more representation as part-time workers than male workers, which may be an important contributor to the lower total female median earnings.
+Our results show that the gender pay gap has decreased over the years, but women workers still earn lesser than their male counterparts across all age categories. Younger female workers between the ages of 16 and 24 face lesser gender-based pay differences compared to older female workers. Over the years, female workers have had more representation as part-time workers than male workers, which may be an important contributor to the lower total female median earnings.
 
-The **Natural Resources, Construction and Maintenace and Production and the Transportation and Material Moving industries** have the two highest number of occupation groups where women earn more than men. In conclusion, an equal representation of both genders in an occupation type may not necessarily mean equal earnings or a lack of gender pay gap.
+The **Natural Resources, Construction and Maintenance and Production, and the Transportation and Material Moving industries** have the two highest number of occupation groups where women earn more than men. In conclusion, an equal representation of both genders in an occupation type may not necessarily mean equal earnings or a lack of gender pay gap.
 
  
 **Practical Implications**
 
-Our study provides workers and stakeholders with more insights on gender-based earning differences across industries, occupations, and age groups in the US. We highlight how women of all ages are affected by this bias. We hope that other industries emulate the Natural Resources, Construction and Maintenace and Production and the Transportation and Material Moving industries in eliminating the gender pay gap and rewarding workers based on their abilities and contributions, rather than their gender.
+Our study provides workers and stakeholders with more insights into gender-based earning differences across industries, occupations, and age groups in the US. We highlight how women of all ages are affected by this bias. We hope that other industries emulate the Natural Resources, Construction and Maintenance and Production, and the Transportation and Material Moving industries in eliminating the gender pay gap and rewarding workers based on their abilities and contributions, rather than their gender.
 
 
 
 **Limitations of Study**
 
-The absence of extensive years of data was a major limitation of our study. The data that we worked with was limited to a certain number of variables which made it impossible to draw generalizable inferences. In addition, we didn't have access to up to date data, hence our findings can only be extended to 2016, without a good picture of what has happened in the most recent years.
+The absence of extensive years of data was a major limitation of our study. The data that we worked with was limited to a certain number of variables which made it impossible to draw generalizable inferences. In addition, we didn't have access to up-to-date data, hence our findings can only be extended to 2016, without a good picture of what has happened in the most recent years.
 
 **Future Research Direction**
 
