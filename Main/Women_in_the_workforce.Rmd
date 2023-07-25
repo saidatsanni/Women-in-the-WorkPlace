@@ -1,0 +1,561 @@
+---
+title: "Data Wrangling Project"
+author: "Saidat Abidemi Sanni and Ayshwarya Srinivasan"
+date: "12/3/2019"
+output: html_document
+---
+
+# Women in the Workplace  {.tabset .tabset-fade} 
+
+## Introduction {.tabset .tabset-fade} 
+
+
+**Problem Statement**
+
+Gender bias in earnings is an ongoing issue. In 2019, the [American Association of University Women (AAUW)](https://www.aauw.org/research/the-simple-truth-about-the-gender-pay-gap/) stated that women who work full-time earn about 80 percent of what their male counterparts make. This report identified the following problems which we attempt to investigate in our study:
+
+* The gender wage gap continues to grow over time.
+* Women face wider pay gap as they get older.
+* Women earn less than men in all but five occupations - wholesale and retail buyers except farm products; police and sheriffs patrol officers; bookkeeping, accounting, and auditing clerks; general office clerks; and data entry keepers.
+* Women make less than men in pink-collar jobs.
+* As women enter an occupation previously dominated by men, pay decreases in that occupation.
+
+## Proposal 
+
+**Data and Methodology**
+
+For this study, we would use the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data which is a historical data about womens' earnings and employment status, specific occupation and earnings from 2013-2016, compiled from the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census Bureau](https://www.census.gov/).
+We intend to analyze the data using the following methodologies: Trend analysis, descriptive analysis, data visualization, and applicable statistical tests. 
+
+
+**Proposed Analysis**
+
+We would investigate the gender pay gap over the years and the changes in the total female salary as a percentage of male salary by age group. We would conduct an exploratory analysis across the different fields/occupation groups to identify the male-dominated vs female-dominated occupation types. Some statistical tests would be employed to determine the differences in pay gap across fields and by age group. Finally, we hope to identify some factors contributing to the differences in wage gap using regression analysis.
+
+
+**Our Contribution**
+
+Our results would provide more insights on the gender pay gap across fields, occupations, and age groups. Our results would show the trend in gender pay gap over the years and some of the factors contributing to gender pay gap. We hope that our study would contribute to the discussion on gender pay gap.
+
+
+## Packages Required
+
+**We used the following packages:**
+
+```{r echo=TRUE, message = FALSE}
+
+library(readxl) #used to import Excel files into R
+library(tidyverse) #used for data manipulation 
+library(dplyr) # used for data manipulation
+library(DT) # used for displaying R data objects (matrices or data frames) as tables on HTML pages
+library(knitr) #used to display an aligned table on the screen
+library(kableExtra)#used to build with straightforward formatting options
+library(ggplot2) # for data visualization
+library(scales)     # for scale_y_continuous(label = percent)
+library(ggthemes)   # for scale_fill_few('medium')
+library(ggalt)    #for the dumbbell plot
+
+```
+
+
+## Data Preparation {.tabset .tabset-fade} 
+### Data Source
+For this study, we use the [Women in Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md) data which is a historical data about womens' earnings and employment status, specific occupation and earnings from 2013-2016, compiled from the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census Bureau](https://www.census.gov/). The data was provided in March 2019 as part of the [#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/) project to celebrate the Women's History month.
+
+The entire data is spread into 3 files: **jobs_gender.csv**, **earnings_female.csv**,  **employed_gender.csv** and are described in the next tab.
+
+### Data Import and Description
+The three datasets are first imported from csv files into dataframes named **jobs_gender**, **earnings_female**,and **employed_gender**
+
+#### **Dataset 1 - jobs_gender**
+
+This dataset contains information on the total number of male and female workers and the total estimated median earnings for all employees at various occupation levels, from 2013-2016. The dataset has 12 variables, with a total of 2,088 data points, across 8 major job categories, 23 minor job categories and 522 occupation types. There are some missing values recorded as "NA" and are taken care of during the data cleaning process. 
+
+More information on this dataset can be found [here](https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/jobs_gender.csv)
+
+```{r echo=TRUE, message = FALSE }
+#Import Dataset 1
+jobs_gender <- read.csv("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/jobs_gender.csv", header = TRUE)
+
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the names of the data columns
+colnames(jobs_gender)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the dimension of the dataset
+dim(jobs_gender)
+```
+
+```{r echo=TRUE, message = FALSE }
+#Count the number of distinct values/observations
+library(dplyr)
+jobs_gender %>%
+      summarise_each(n_distinct, "occupation","minor_category", "major_category")
+```
+
+```{r echo=TRUE, message = FALSE }
+#Check the number of missing values per column
+colSums(is.na(jobs_gender))
+```
+
+
+#### **Dataset 2 - earnings_female**
+
+This dataset contains the historic information of female salary as a percent of male salary for various age groups, from year 1979 to 2011. The dataset has 3 variables with 264 observations. This dataset has no missing values. 
+
+The dataset can be found [here](https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/earnings_female.csv)
+
+```{r echo=TRUE, message = FALSE }
+#Imports Dataset 2
+earnings_female <- read.csv("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/earnings_female.csv", header = TRUE)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the names of the data columns
+colnames(earnings_female)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the dimension of the dataset
+dim(earnings_female)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Count the number of missing values per column
+colSums(is.na(earnings_female))
+```
+
+#### **Dataset 3 - employed_gender**
+
+This dataset shows the percentage of part-time and full-time employees for each year at the gender level. The dataset has 7 variables with 49 observations each, from year 1968 to 2016. This dataset has no missing values and can be accessed [here](https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/employed_gender.csv)
+
+```{r echo=TRUE, message = FALSE }
+#Import Dataset 3
+employed_gender <- read.csv("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/employed_gender.csv", header = TRUE)
+
+```
+
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the names of the data columns
+colnames(employed_gender)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Check the dimension of the dataset
+dim(employed_gender)
+```
+
+
+```{r echo=TRUE, message = FALSE }
+#Count the number of missing values per column
+colSums(is.na(employed_gender))
+```
+
+
+
+### Data Cleaning
+
+
+#### Variable Types
+We investigate the variable types in our dataset to see if they are accurate or need to be changed.The codes and outputs below indicate that all the variable types in all three datasets are correct.
+
+**Dataset 1 - jobs_gender**
+```{r message = FALSE }
+glimpse(jobs_gender)
+```
+
+**Dataset 2 - earnings_female**
+```{r message = FALSE }
+glimpse(earnings_female)
+```
+
+**Dataset 3- employed_gender**
+```{r message = FALSE }
+glimpse(employed_gender)
+```
+
+
+
+
+#### Missing Values & Data Imputation
+
+The next stage of the data cleaning process is to check for missing values and make decisions on removal or data imputation, where appropriate.
+As shown in the Data Import and Description tab, the only data set with some missing values is **Dataset 1 - jobs_gender**. So, we focus on this dataset. 
+
+First, we notice that there are 65 cases with missing values for the total earnings for female workers. Of this 65 cases, there are 19 cases where the total number of female workers in the field or occupation types is zero and the total earnings for female is missing "NA". We impute these missing values as zero because no female workers implies no total female earnings.
+
+```{r message = FALSE }
+#Impute missing values as zero
+jobs_gender$total_earnings_female <- ifelse(jobs_gender$workers_female == 0, 0, jobs_gender$total_earnings_female)
+```
+
+For the remaining 46 observations with missing values for the total female earnings,we observe that the number of female workers is reported, indicating that these values are non-zero and missing. Hence, we remove the entire row from the dataset. We believe that this removal would not affect our analysis and goals for this study because, it's just about 2 percent of the entire dataset.
+
+```{r message = FALSE }
+#Remove rows with missing values for female earnings
+jobs_gender_vector <- complete.cases(jobs_gender[,'total_earnings_female'])
+jobs_gender <- jobs_gender[jobs_gender_vector,]
+```
+
+Next, we notice that there are 4 observations where the total earnings for male workers is missing. In 3 of these cases, the number of male workers is zero and the total earnings for male is missing "NA". A closer look at these three observations revealed that in 2013, 2014, and 2016, there were no male workers who worked as "Nurse Midwives". Therefore, we imputed the missing total male earnings as zero because no male workers implies no male earnings. Also, this means that the wage percent male would be zero.
+
+```{r message = FALSE }
+#Impute missing values as zero
+jobs_gender$total_earnings_male <- ifelse(jobs_gender$workers_male == 0, 0, jobs_gender$total_earnings_male)
+jobs_gender$wage_percent_of_male <- ifelse(jobs_gender$total_earnings_male == 0, 0, jobs_gender$wage_percent_of_male)
+```
+
+In the fourth case which was in 2015, a total of 53 male workers was reported for Nurse midwives. This is very different from what was reported in 2013, 2014, and 2016. This could mean that the occupation type (Nurse Midwives) had male workers in 2015 or an error occurred during the data reporting process. We decide to remove the entire row associated with this observation not because of the anomaly, but because the male total earnings is missing and reported as "NA". 
+
+```{r message = FALSE }
+#Remove row with missing values for male earnings
+jobs_gender_m_vector <- complete.cases(jobs_gender[,'total_earnings_male'])
+jobs_gender <- jobs_gender[jobs_gender_m_vector,]
+```
+
+Finally, we notice that the column "wage_percent_of_male" showing the percentage of the total female earnings to total male earnings has a total of 846 missing values. Given that this is the percentage of the total female earnings to the total male earnings, we calculate and impute this variable using the total_earnings_male and total_earning_female columns.
+
+```{r message = FALSE }
+#Calculate and impute results for wage_percent_of_male
+jobs_gender$wage_percent_of_male<- ifelse(is.na(jobs_gender$wage_percent_of_male),jobs_gender$total_earnings_female/jobs_gender$total_earnings_male*100,jobs_gender$wage_percent_of_male)
+```
+
+
+```{r echo=FALSE,message = FALSE }
+write.csv(jobs_gender,"~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/jobs_gender_cleaned.csv",row.names = FALSE)
+```
+
+
+
+#### Data Summary
+
+We examine the summary of the datasets for unusual values and outliers.
+In all three datasets, there are no unusual values. However, we observe some extreme values in the number of workers and earnings variables in dataset 1.These variables are further examined using box plots.
+It can also be seen that the wage percentage male variable, which shows the percentage of female earnings to male earnings, in dataset 1 consists of values above 100 percent. This is not an error, instead this shows that there are some fields where female workers earn more than male workers.
+
+**Dataset 1 - jobs_gender**
+
+```{r echo = FALSE, message = FALSE }
+#import dataset with no missing values
+jobs_gender <- read.csv("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/jobs_gender_cleaned1.csv")
+summary_jobs_gender = summary(jobs_gender[-c(2:4)])
+datatable(summary_jobs_gender, options = list(
+  searching = TRUE,
+  pageLength = 6,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+
+**Dataset 2 - earnings_female**
+
+```{r echo = FALSE, message = FALSE }
+summary_earnings_female = summary(earnings_female[-2])
+datatable(summary_earnings_female, options = list(
+  searching = TRUE,
+  pageLength = 6,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+
+
+**Dataset 3- employed_gender**
+
+```{r echo = FALSE, message = FALSE}
+summary_employed_gender = summary(employed_gender)
+datatable(summary_employed_gender, options = list(
+  searching = TRUE,
+  pageLength = 6,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+
+```
+
+#### Outliers
+We examine the presence of outliers using box plots in two parts. First we look at the number of workers variables. This shows the presence of outliers. However, this is not surprising because the number of workers vary by occupation. 
+
+```{r message = FALSE }
+boxplot(jobs_gender[c(5:7)],options(scipen=999))
+```
+
+
+Similarly the box plot of the earnings variables show the presence of outliers. This is also unsurprising because the median earnings vary across different occupations. Hence, we do nothing to the outliers and proceed with the rest of the analysis.
+
+```{r message = FALSE }
+boxplot(jobs_gender[c(9:11)],options(scipen=999))
+```
+
+
+### Data preview
+
+**Dataset 1 - jobs_gender**
+
+```{r echo = FALSE, message = FALSE}
+
+library(DT)
+jobs_gender <- read.csv("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/jobs_gender_cleaned.csv")
+datatable(jobs_gender, options = list(
+  searching = TRUE,
+  pageLength = 5,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+
+**Dataset 2 - earnings_female**
+```{r echo = FALSE, message = FALSE}
+datatable(earnings_female, options = list(
+  searching = TRUE,
+  pageLength = 5,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+
+**Dataset 3- employed_gender**
+```{r echo = FALSE, message = FALSE}
+library(DT)
+datatable(employed_gender, options = list(
+  searching = TRUE,
+  pageLength = 5,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+### Summary of Variables
+**Dataset 1 - jobs_gender**
+
+```{r echo = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tidyverse)
+jobs_gender_data_dictionary <- read_excel("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/jobs_gender_data_dictionary.xlsx")
+jobs_gender_data_dictionary %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "responsive"), full_width = F)
+
+```
+
+**Dataset 2 - earnings_female**
+
+```{r echo = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tidyverse)
+earnings_female_data_dictionary <- read_excel("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/earnings_female data dictionary.xlsx")
+earnings_female_data_dictionary %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "responsive"), full_width = F)
+```
+
+**Dataset 3 - employed_gender**
+
+```{r echo = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tidyverse)
+employed_gender_data_dictionary <- read_excel("~/BANA/Coursework/BANA 7025 Data wrangling/Mid term assignment/women_in_the_workplace_data/employed_gender data dictionary.xlsx")
+employed_gender_data_dictionary %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", "responsive"), full_width = F)
+
+```
+
+## Exploratory Data Analysis  {.tabset .tabset-fade} 
+
+From the datasets, we aim to calculate how women's wages compare to men's wages through the years for various occupation categories. 
+To provide more clarity, we are categorizing our analysis in 3 groups
+
+1. Industry based
+2. Time series based
+3. Gender based
+
+
+
+### Industry based analysis
+
+**Male-dominated vs Female-dominated occupations**
+
+
+**Which positions do female earn more than men in?**
+
+We wanted to analyze, for what occupations through the years have women been paid more than men. More specifically, we wanted to see what occupation category has the highest frequency of such jobs.
+What we observe, surprisingly is that the industry with the highest frequencies are Natural Resources, Construction and Maintenace and Production, Transportation and Material Moving. These industries have tradionally been male-dominated. 
+
+```{r echo=FALSE, message=FALSE, fig.width=7,fig.height=4}
+#What jobs are women paid more in 
+jobs_women_paid_more <- jobs_gender[jobs_gender$wage_percent_of_male>100,]
+jobs_women_paid_more <- jobs_women_paid_more[!duplicated(jobs_women_paid_more$occupation), ]
+avg_percent_female <- mean(jobs_women_paid_more$percent_female)
+jwpm_major_cat_freq <- table(jobs_women_paid_more$major_category)
+jwpm_minor_cat_freq <- table(jobs_women_paid_more$minor_category)
+jwpm_major_cat_freq1 <- as.data.frame(jwpm_major_cat_freq)
+jwpm_minor_cat_freq1 <- as.data.frame(jwpm_minor_cat_freq)
+
+
+ggplot(jwpm_major_cat_freq1, aes(x=reorder(Var1, Freq), y = Freq)) +   geom_bar(stat="identity", fill="steelblue")+
+  xlab("Major category") + ylab("# of jobs")+
+  coord_flip()
+```
+
+When we look at the gender ratio for these industries, we see that the industried that fared the highest in paying women more also have astounding small representation. 
+
+We can hypothesize that this could be an active effort from these industries to attract more women employees by offering higher salaries.
+```{r echo=FALSE, message=FALSE, fig.width=7,fig.height=4}
+ggplot(jobs_women_paid_more , aes(x=reorder(major_category, -percent_female), y=percent_female)) + 
+  geom_bar(position = "dodge", stat = "summary", fun.y = "mean", fill="steelblue")+
+  xlab("Major category") + ylab("Avg percent female of male")+
+  coord_flip()
+
+
+```
+
+
+### Time series analysis
+**Does age determine how wide the gender pay gap is?**
+
+We wanted to have a look at whether over the years, age has contributed to the gender pay gap.
+
+Despite the fluctuations shown, younger female workers between the ages of 16 and 24 were paid salaries closer to their male counterparts than older female workers. This indicates that younger female workers have been faced with a lesser gender biasing compared to older workers. It can be assumed that when it comes to entry level jobs, where the average age would be much lower, the pay is still comparable but as employees grow in rank, women are slowly starting to get paid lesser and lesser.
+
+Surprisingly, the chart suggests that women between the ages of 35-64 face a wider gender pay gap before 2001 and in 2011 compared to those who are 65 years and above.
+
+One thing to note in particular is that it is very evident from the graph that across the years, no matter what age group a woman belonged to, she is always subjected to gender parity based biasing. None of the reported percentages was equal to 100 percent or more, indicating that from 1979 to 2011, male workers earned more than the female workers across all the age categories.
+
+
+```{r echo = FALSE, message = FALSE,  fig.width=7,fig.height=4}
+#construct a line chart to show the trend over the years
+#first remove total category
+
+ggplot(data=(earnings_female[-c(1:33),]), aes(x=Year, y=percent, group = group, colour = group)) +
+  labs(x = 'Year'
+       , y = 'Female salary percent of male salary'
+       , title = "Younger female workers face lesser gender pay gap")+
+  ylim(50,100)+
+    geom_line(size=0.9)
+
+
+```
+
+**Over the years, have there been more full-/part-time female workers than male?**
+
+We investigate this to gain some insights on how the increase/decrease in full-time workers may contribute to the gender pay gap. Over the years considered, 2000-2016, the full-time workers in US workforce have been more males than females.However, the trend over the years has remained the same across both genders, with an decrease in full-time workers between 2008 and 2009, suggesting the likely effect of the financial crisis.
+
+On the otherhand, female workers are more represented as part-time workers than male workers. This may be  an important contributor to the lower total female median earnings.
+
+```{r echo = FALSE, message = FALSE, fig.width=4,fig.height=4}
+library(ggalt)
+full_time = employed_gender[33:49,c(1,4,6)]
+ggplot(full_time, aes(x=full_time_female, xend=full_time_male, y=year)) + 
+  #create a thick line between x and xend instead of using defaut 
+  #provided by geom_dubbell
+  geom_segment(aes(x=full_time_female, 
+                   xend=full_time_male, 
+                   y=year, 
+                   yend=year), 
+               color="#b2b2b2", size=2.75)+
+  geom_dumbbell(color="light blue", 
+                size_x=5, 
+                size_xend = 5,
+                colour_x="#ef820d", 
+                colour_xend = "#5096dc")+
+  labs(x=NULL, y=NULL, 
+       title="Full time", 
+       subtitle="Proportion of female vs male full-time workers")+
+  coord_flip()
+
+```
+```{r echo = FALSE, message = FALSE, fig.width=4,fig.height=4}
+full_time = employed_gender[33:49,c(1,5,7)]
+ggplot(full_time, aes(x=part_time_female, xend=part_time_male, y=year)) + 
+  #create a thick line between x and xend instead of using defaut 
+  #provided by geom_dubbell
+  geom_segment(aes(x=part_time_female, 
+                   xend=part_time_male, 
+                   y=year, 
+                   yend=year), 
+               color="#b2b2b2", size=2.75)+
+  geom_dumbbell(color="light blue", 
+                size_x=5, 
+                size_xend = 5,
+                colour_x="#ef820d", 
+                colour_xend = "#5096dc")+
+  labs(x=NULL, y=NULL, 
+       title="Part time", 
+       subtitle="Proportion of female vs male part-time workers")+
+  coord_flip()
+
+```
+
+### Gender based Analysis
+
+**Female only vs male only occupations**
+
+In 2013, 2014, and 2016, the Nurse midwives occupation only had female workers. Meanwhile, five major job categories - Construction and Extraction, material moving, Installation, Maintenance, and Repair,Transportation, and protective services had only male workers during the same time period.
+
+
+```{r,message = FALSE}
+#All female occupations
+female_only <- jobs_gender %>% select(occupation) %>% 
+filter(jobs_gender$workers_male==0)
+distinct(female_only)
+
+#All male occupations
+male_only <- jobs_gender %>% select(minor_category) %>% 
+filter(jobs_gender$workers_female==0)
+distinct(male_only)
+
+```
+
+**Gender gap**
+
+For a more accurate comparison of gender pay gap, we focus on occupations with equal or almost equal gender representation in the workforce.We see that only the food cooking machine operators and tenders occupation type had an approximately equal number of male and female workers. Yet, women make about 62 percent of what men make.
+In the other 6 occupation types, women earn the closest to men when they work as Parking enforcement workers. These findings suggest that an equal representation of both genders in a field may not necessarily mean equal earnings or a lack of gender pay gap.
+
+
+```{r echo = FALSE, message = FALSE}
+#Which occupations have equal or almost equal gender representation
+#create a new column for the percentage of male workers
+col_percent_gender <-jobs_gender %>% 
+    mutate(percent_male = round((workers_male/total_workers)*100),digits=0) %>% 
+  mutate(percent_female1 = round((workers_female/total_workers)*100),digits=0) %>% 
+  filter(year==2016)
+
+```
+
+```{r echo = FALSE, message = FALSE,warning=FALSE}
+almost_equal_rep <- col_percent_gender %>% select(occupation,percent_male, percent_male, percent_female1,total_earnings_female,total_earnings_female,total_earnings_male, wage_percent_of_male) %>% 
+filter(round(col_percent_gender$percent_male,digits=0) == 50)
+
+ 
+
+datatable(almost_equal_rep, options = list(
+  searching = TRUE,
+  pageLength = 4,
+  scrollX = TRUE,
+  scrollCollapse = TRUE
+))
+```
+
+
