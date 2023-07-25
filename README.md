@@ -34,4 +34,4 @@ The files must be executed in the following order:
 
 1. Women_in_the_workforce.Rmd
 
-Rpubs : https://rpubs.com/Sannisa/WomenInTheWorkforce
+Rpubs : https://rpubs.com/Saidat/BANA_7025_Finalproject
