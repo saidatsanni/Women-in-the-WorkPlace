@@ -1,6 +1,7 @@
 # Women In The Workforce
 
-![Workforce](/images/workforce.jpg)
+![WomenInTheWorkPlace](/Women-In-The-Workplace.jpg)
+
 
 Gender bias in earnings is an ongoing issue. In 2019, the [American Association of University Women (AAUW)](https://www.aauw.org/research/the-simple-truth-about-the-gender-pay-gap/) stated that women who work full-time earn about 80 percent of what their male counterparts make. This project provides insights on the gender pay gap across fields, occupations, and age groups.
 
