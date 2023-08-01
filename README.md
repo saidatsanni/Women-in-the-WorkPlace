@@ -8,7 +8,7 @@ Gender bias in earnings is an ongoing issue. In 2019, the [American Association 
 **Datasets**
 
 
-Three different datasets are considered in this project. They contain different information which are merged nad synthesized for this analysis.
+Three different datasets are considered in this project. They contain different information which are merged and synthesized for this analysis.
 1. earnings_female.csv
 2. employed_gender.csv	
 3. jobs_gender.csv
@@ -16,7 +16,7 @@ Three different datasets are considered in this project. They contain different 
 **Analysis** 
 
 
-An extensive Data Cleaning, Manipulation, and Exploratory Data Analysis is first conducted. This includes addressing missing data issues, outliers, and influential variables. Then, the analysis of the pay gap focuses on thre broad areas:
+Extensive Data Cleaning, Manipulation, and Exploratory Data Analysis is conducted. This includes addressing missing data issues, outliers, and influential variables. Then, the analysis of the pay gap focuses on three broad areas:
 * Industry based analysis
 * Gender based Analysis
 * Time series analysis
@@ -30,7 +30,7 @@ This study aims to make a meaningful contribution to the ongoing discussion and 
 
 **Project Execution**
 
-The files must be executed in the following order:
+The files are executed in the following order:
 
 1. Women_in_the_workforce.Rmd
 
