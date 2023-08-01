@@ -9,9 +9,9 @@ Women in the workforce
       - [Data Cleaning](#data-cleaning)
       - [Data Dictionary](#data-dictionary)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
-      - [Industry based analysis](#industry-based-analysis)
-      - [Gender based Analysis](#gender-based-analysis)
-      - [Time series analysis](#time-series-analysis)
+      - [Industry-based analysis](#industry-based-analysis)
+      - [Gender-based Analysis](#gender-based-analysis)
+      - [Time-series analysis](#time-series-analysis)
   - [Summary](#summary)
 
 ## Introduction
@@ -26,7 +26,7 @@ male counterparts make. This report identified the following problems
 which we attempt to investigate in our study:
 
   - The gender wage gap continues to grow over time.
-  - Women of all age groups face gender pay gap.
+  - Women of all age groups face a gender pay gap.
   - Women face a wider pay gap as they get older.
   - Women are still faced with the gender pay gap in occupations with an
     equal representation of male and female workers.
@@ -35,8 +35,8 @@ which we attempt to investigate in our study:
 
 For this study, we would use the [Women in
 Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md)
-data which is historical data about womens’ earnings and employment
-status, specific occupation and earnings from 2013-2016, compiled from
+data which is historical data about women’s earnings and employment
+status, specific occupation, and earnings from 2013-2016, compiled from
 the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census
 Bureau](https://www.census.gov/). We intend to analyze the data using
 the following methodologies: *Trend analysis, descriptive analysis, data
@@ -44,7 +44,7 @@ visualization techniques, and inferential analysis*.
 
 **Our Contribution**
 
-Our results would provide more insights on the gender pay gap across
+Our results would provide more insights into the gender pay gap across
 fields, occupations, and age groups. Our findings would shed some light
 on the gender pay gap faced by women across all age groups. Finally, we
 hope that our study would contribute to the discussion on the gender pay
@@ -73,13 +73,13 @@ library(ggalt)    #for the dumbbell plot
 
 For this study, we use the [Women in
 Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md)
-data which is historical data about womens’ earnings and employment
-status, specific occupation and earnings from 2013-2016, compiled from
+data which is historical data about women’s earnings and employment
+status, specific occupation, and earnings from 2013-2016, compiled from
 the [Bureau of Labor Statistics](https://www.bls.gov/) and the [Census
 Bureau](https://www.census.gov/). The data was provided in March 2019 as
 part of the
 [\#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/)
-project to celebrate the Women’s History month.
+project to celebrate Women’s History Month.
 
 The entire data is spread into 3 files: **jobs\_gender.csv**,
 **earnings\_female.csv**, **employed\_gender.csv** and are described
@@ -87,7 +87,7 @@ below.
 
 ### Data Import and Description
 
-The three datasets are first imported from csv files into dataframes
+The three datasets are first imported from csv files into data frames
 named **jobs\_gender**, **earnings\_female**,and **employed\_gender**
 
 #### **Dataset 1 - jobs\_gender**
@@ -134,8 +134,8 @@ More information on this dataset can be found
 
 #### **Dataset 2 - earnings\_female**
 
-This dataset contains the historic information of female salary as a
-percent of male salary for various age groups, from year 1979 to 2011.
+This dataset contains historic information on female salaries as a
+percent of male salaries for various age groups, from the year 1979 to 2011.
 The dataset has 3 variables with 264 observations. This dataset has no
 missing values.
 
@@ -159,7 +159,7 @@ The dataset can be found
 
 This dataset shows the percentage of part-time and full-time employees
 for each year at the gender level. The dataset has 7 variables with 49
-observations each, from year 1968 to 2016. This dataset has no missing
+observations each, from the year 1968 to 2016. This dataset has no missing
 values and can be accessed
 [here](https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/employed_gender.csv)
 
@@ -185,7 +185,7 @@ values and can be accessed
 #### Variable Types
 
 We investigate the variable types in the dataset to see if they are
-accurate or need to be changed.The outputs below indicate that all of
+accurate or need to be changed. The outputs below indicate that all of
 the variable types in all three datasets are correct.
 
 **Dataset 1 - jobs\_gender**
@@ -234,37 +234,37 @@ only data set with some missing values is **Dataset 1 - jobs\_gender**.
 So, we focus on this dataset.
 
 1.  There are **65 cases with missing values** for the total earnings
-    for female workers. Of this 65 cases, there are **19 cases** where
+    for female workers. Of these 65 cases, there are **19 cases** where
     the total number of female workers in the field or occupation types
-    is zero and the total earnings for female is missing “NA”. We impute
-    these missing values as zero because no female workers implies no
+    is zero and the total earnings for females are missing “NA”. We impute
+    these missing values as zero because no female workers imply no
     total female earnings.
 
 2.  For the **remaining 46 observations** with missing values for the
-    total female earnings,we observe that the number of female workers
+    total female earnings, we observe that the number of female workers
     is reported, indicating that these values are non-zero and missing.
     Hence, we remove the entire row from the dataset. We believe that
     this removal would not affect our analysis and goals for this study
-    because, it’s just about 2 percent of the entire dataset.
+    because it’s just about 2 percent of the entire dataset.
 
 3.  There are **4 observations** where the total earnings for male
-    workers is missing. In 3 of these cases, the number of male workers
-    is zero and the total earnings for male is missing “NA”. A closer
+    workers are missing. In 3 of these cases, the number of male workers
+    is zero and the total earnings for males are missing “NA”. A closer
     look at these three observations revealed that in 2013, 2014, and
     2016, there were no male workers who worked as “Nurse Midwives”.
     Therefore, we imputed the missing total male earnings as zero
-    because no male workers implies no male earnings. Consequently, the
+    because no male workers imply no male earnings. Consequently, the
     percentage of female earnings to male earnings is imputed as zero.
 
-4.  In 2015, a total of 53 male workers was reported for Nurse midwives.
+4.  In 2015, a total of 53 male workers were reported for Nurse midwives.
     This is very different from what was reported in 2013, 2014, and
     2016. This could mean that the occupation type (Nurse Midwives) had
     male workers in 2015 or an error occurred during the data reporting
     process. We decide to remove the entire row associated with this
     observation not because of the anomaly, but because the male total
-    earnings is missing and reported as “NA”.
+    earnings are missing and reported as “NA”.
 
-Finally, we notice that the column “wage\_percent\_of\_male” showing the
+Finally, we notice that the column “wage\_percent\_of\_male” shows the
 percentage of the total female earnings to total male earnings has a
 total of 846 missing values. Given that this is the percentage of the
 total female earnings to the total male earnings, we calculate and
@@ -734,11 +734,11 @@ Percent of employed men usually working part time
 
 ## Exploratory Data Analysis
 
-Our analysis and findings are presented in 3 categories: Industry based,
-Gender based, and Time series based . These categories reveal the
+Our analysis and findings are presented in 3 categories: Industry-based,
+Gender-based, and Time-series based. These categories reveal the
 different levels of analysis considered in this study.
 
-### Industry based analysis
+### Industry-based analysis
 
 **Do women earn more than men in certain industries?**
 
@@ -763,7 +763,7 @@ earn way more than men in certain jobs from these industries.
 An examination of the gender ratio in 8 industries where female workers
 earn more than male workers show that these industries are
 male-dominated. Also, female workers have a very small representation in
-the top two industries- Natural Resources, Construction and Maintenace
+the top two industries- Natural Resources, Construction, and Maintenace
 and Production and Transportation and Material Moving.
 
 Based on these findings, it could be suggested that the industries are
@@ -772,10 +772,10 @@ salaries.
 
 ![](Women-in-the-Workforce_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
-**How do women fare in the top paying jobs**
+**How do women fare in top-paying jobs**
 
-We wanted to examine, for the year 2016, women representation in jobs
-that were considered the highest paying jobs of that year (The list of
+We wanted to examine, for the year 2016, women's representation in jobs
+that were considered the highest-paying jobs of that year (The list of
 the top-paying jobs were consolidated from sites such as Forbes and
 Business Insider).
 
@@ -786,9 +786,9 @@ Noticeably over 50% of these jobs have very poor female representation
 
 ![](Women-in-the-Workforce_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
-### Gender based Analysis
+### Gender-based Analysis
 
-**Female only vs male only occupations**
+**Female-only vs male-only occupations**
 
 Historically there have always been jobs that have been influenced by
 gender biasing. Jobs that involved heavy manual labor were always
@@ -798,21 +798,21 @@ women.
 We wanted to capture if these biases still exist or if the gender gap
 has been closed in recent years.
 
-In 2013, 2014, and 2016, the Nurse midwives occupation only had female
+In 2013, 2014, and 2016, the Nurse midwife occupation only had female
 workers. Meanwhile, five major job categories - Construction and
 Extraction, material moving, Installation, Maintenance, and Repair,
-Transportation, and protective services had only male workers during the
+Transportation and protective services had only male workers during the
 same period.
 
 These observations align with the traditional gender-based roles and
 unfortunately haven’t changed over the years.
 
-Female only occupations:
+Female-only occupations:
 
     ##       occupation
     ## 1 Nurse midwives
 
-Male only occupations:
+Male-only occupations:
 
     ##                          minor_category
     ## 1           Construction and Extraction
@@ -831,7 +831,7 @@ men across all four occupations.
 
 In this context, female workers who are food cooking machine operators
 and tenders face the widest gender pay gap. Their wages are about 62.3
-percent of male workers’ wages. These findings suggest that an **equal
+percent of male workers’ wages. These findings suggest that **equal
 representation may not necessarily mean equal earnings** or a lack of
 gender pay gap.
 
@@ -990,7 +990,7 @@ Food cooking machine operators and tenders
 
 ### Time series analysis
 
-**Do women face wider pay gap as they get older?**
+**Do women face a wider pay gap as they get older?**
 
 The chart below provides insights into three of our objectives.
 
@@ -1008,21 +1008,21 @@ The chart below provides insights into three of our objectives.
     gender-based pay differences compared to older female workers. This
     suggests that as women grow older, they tend to make lesser than
     male workers. Based on this finding, it may be assumed that for
-    jobs, with a younger workforce, the earnings for both genders is
+    jobs, with a younger workforce, the earnings for both genders are
     closer than jobs or positions with older workers.
 
 ![](Women-in-the-Workforce_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
-**Full-time/ Part-time represenation based on gender**
+**Full-time/ Part-time representation based on gender**
 
 The proportion of full-/part-time workers is examined across both
-genders to gain some insights on how the increase/decrease in full-time
+genders to gain some insights into how the increase/decrease in full-time
 workers may have contributed to the gender pay gap. From 2000-2016, we
 notice that the percentage of men working full time is greater than the
 percentage of women working full time.
 
 We see a dip in the percentage of both male and female full-time
-percentage between 2008 and 2009 and an increase in part-time percentage
+percentage between 2008 and 2009 and an increase in the part-time percentage
 between 2008 and 2009, suggesting the likely effect of the 2008
 financial crisis.
 
@@ -1040,7 +1040,7 @@ This study examined the gender bias in earnings in the US, with a focus
 on female workers. Using the [Women in
 Workforce](https://github.com/rfordatascience/tidytuesday/blob/master/data/2019/2019-03-05/readme.md)
 data, we explored the trend and how women of different age groups are
-affected.In addition, we highlighted industries in which occupations
+affected. In addition, we highlighted industries in which occupations
 where female workers earn more than male workers. We ranked these
 industries based on the number of occupation types with female earnings
 greater than male earnings and indicated if the industries are male- or
@@ -1048,7 +1048,7 @@ female-dominated.
 
 Our results show that the gender pay gap has decreased over the years,
 but women workers still earn lesser than their male counterparts across
-all the age categories. Younger female workers between the ages of 16
+all age categories. Younger female workers between the ages of 16
 and 24 face lesser gender-based pay differences compared to older female
 workers. Over the years, female workers have had more representation as
 part-time workers than male workers, which may be an important
@@ -1077,7 +1077,7 @@ than their gender.
 The absence of extensive years of data was a major limitation of our
 study. The data that we worked with was limited to a certain number of
 variables which made it impossible to draw generalizable inferences. In
-addition, we didn’t have access to up to date data, hence our findings
+addition, we didn’t have access to up-to-date data, hence our findings
 can only be extended to 2016, without a good picture of what has
 happened in the most recent years.
 
